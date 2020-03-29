@@ -17,24 +17,22 @@ class MenuDrawer extends React.Component {
     this.leftOffset = new Animated.Value(0);
     this.state = {
       expanded: false,
-      fadeAnim: new Animated.Value(1)
+      fadeAnim: new Animated.Value(0.3)
     };
   }
 
   openDrawer = () => {
-    const { menuWidth, animationTime, opacity } = this.props;
+    const { menuWidth, animationTime } = this.props;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
       Animated.timing(this.leftOffset, {
         toValue: DRAWER_WIDTH,
-        duration: animationTime,
-        useNativeDriver: true
+        duration: animationTime
       }),
       Animated.timing(this.state.fadeAnim, {
-        toValue: opacity,
-        duration: animationTime,
-        useNativeDriver: true
+        toValue: 1,
+        duration: animationTime
       })
     ]).start();
   };
@@ -45,13 +43,11 @@ class MenuDrawer extends React.Component {
     Animated.parallel([
       Animated.timing(this.leftOffset, {
         toValue: 0,
-        duration: animationTime,
-        useNativeDriver: true
+        duration: animationTime
       }),
       Animated.timing(this.state.fadeAnim, {
-        toValue: 1,
-        duration: animationTime,
-        useNativeDriver: true
+        toValue: 0,
+        duration: animationTime
       })
     ]).start();
   };
@@ -91,7 +87,8 @@ class MenuDrawer extends React.Component {
             styles.drawer,
             {
               width: DRAWER_WIDTH,
-              left: -DRAWER_WIDTH
+              left: -DRAWER_WIDTH,
+              opacity: fadeAnim
             }
           ]}
         >
@@ -119,7 +116,6 @@ class MenuDrawer extends React.Component {
       overlay,
       overlayOpacity
     } = this.props;
-    const { fadeAnim } = this.state;
     const animated = { transform: [{ translateX: this.leftOffset }] };
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
