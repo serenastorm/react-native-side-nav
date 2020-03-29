@@ -70,6 +70,46 @@ class MenuDrawer extends React.Component {
     open ? this.openDrawer() : this.closeDrawer();
   }
 
+  renderOverlay = () => {
+    const {
+      children,
+      drawerContent,
+      menuWidth,
+      open,
+      overlay,
+      overlayOpacity
+    } = this.props;
+    const { fadeAnim } = this.state;
+    const animated = { transform: [{ translateX: this.leftOffset }] };
+    const DRAWER_WIDTH = screen.width * (menuWidth / 100);
+
+    return (
+      <View style={[styles.main, { width: screen.width }]}>
+        <Animated.View
+          style={[
+            animated,
+            styles.drawer,
+            {
+              width: DRAWER_WIDTH,
+              left: -DRAWER_WIDTH
+            }
+          ]}
+        >
+          {drawerContent ? drawerContent : this.drawerFallback()}
+        </Animated.View>
+        <View style={styles.container}>
+          <View style={styles.overlay}>
+            {open && overlay && (
+              <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
+            )}
+            {children}
+          </View>
+          {children}
+        </View>
+      </View>
+    );
+  };
+
   renderPush = () => {
     const {
       children,
@@ -112,7 +152,7 @@ class MenuDrawer extends React.Component {
   };
 
   render() {
-    return this.renderPush();
+    return this.renderOverlay();
   }
 }
 
