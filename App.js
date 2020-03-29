@@ -30,6 +30,7 @@ class App extends React.Component {
         <MenuDrawer
           open={this.state.open}
           drawerContent={this.drawerContent()}
+          push={true}
           menuWidth={45}
           animationTime={250}
           fade={true}

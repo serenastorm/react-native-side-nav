@@ -171,7 +171,8 @@ class MenuDrawer extends React.Component {
   };
 
   render() {
-    return this.renderOverlay();
+    const { push } = this.props;
+    return push ? this.renderPush() : this.renderOverlay();
   }
 }
 
@@ -183,7 +184,8 @@ MenuDrawer.defaultProps = {
   opacity: 0.4,
   overlay: true,
   overlayOpacity: 0.7,
-  leftAligned: true
+  leftAligned: true,
+  push: false
 };
 
 MenuDrawer.propTypes = {
@@ -194,7 +196,8 @@ MenuDrawer.propTypes = {
   opacity: PropTypes.number,
   overlay: PropTypes.bool,
   overlayOpacity: PropTypes.number,
-  leftAligned: PropTypes.bool
+  leftAligned: PropTypes.bool,
+  push: PropTypes.bool
 };
 
 const styles = StyleSheet.create({
