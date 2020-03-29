@@ -189,11 +189,11 @@ MenuDrawer.defaultProps = {
   open: false,
   menuWidth: 100,
   animationTime: 200,
-  fade: true,
+  fade: false,
   opacity: 0.4,
-  overlay: true,
-  overlayOpacity: 0.7,
-  leftAligned: true,
+  overlay: false,
+  overlayOpacity: 0.4,
+  leftAligned: false,
   push: false
 };
 
