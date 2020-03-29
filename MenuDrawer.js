@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
+const screen = Dimensions.get("window");
 
 class MenuDrawer extends React.Component {
   constructor(props) {
@@ -24,7 +23,7 @@ class MenuDrawer extends React.Component {
 
   openDrawer = () => {
     const { menuWidth, animationTime, opacity } = this.props;
-    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100);
+    const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
       Animated.timing(this.leftOffset, {
@@ -72,14 +71,21 @@ class MenuDrawer extends React.Component {
   }
 
   renderPush = () => {
-    const { children, drawerContent, menuWidth } = this.props;
+    const {
+      children,
+      drawerContent,
+      menuWidth,
+      open,
+      overlay,
+      overlayOpacity
+    } = this.props;
     const { fadeAnim } = this.state;
     const animated = { transform: [{ translateX: this.leftOffset }] };
-    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100);
+    const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     return (
       <Animated.View
-        style={[animated, styles.main, { width: SCREEN_WIDTH + DRAWER_WIDTH }]}
+        style={[animated, styles.main, { width: screen.width + DRAWER_WIDTH }]}
       >
         <View
           style={[
@@ -92,7 +98,15 @@ class MenuDrawer extends React.Component {
         >
           {drawerContent ? drawerContent : this.drawerFallback()}
         </View>
-        <View style={styles.container}>{children}</View>
+        <View style={styles.container}>
+          <View style={styles.overlay}>
+            {open && overlay && (
+              <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
+            )}
+            {children}
+          </View>
+          {children}
+        </View>
       </Animated.View>
     );
   };
@@ -107,7 +121,9 @@ MenuDrawer.defaultProps = {
   menuWidth: 100,
   animationTime: 200,
   fade: true,
-  opacity: 0.4
+  opacity: 0.4,
+  overlay: true,
+  overlayOpacity: 0.7
 };
 
 MenuDrawer.propTypes = {
@@ -115,7 +131,9 @@ MenuDrawer.propTypes = {
   menuWidth: PropTypes.number,
   animationTime: PropTypes.number,
   fade: PropTypes.bool,
-  opacity: PropTypes.number
+  opacity: PropTypes.number,
+  overlay: PropTypes.bool,
+  overlayOpacity: PropTypes.number
 };
 
 const styles = StyleSheet.create({
@@ -127,14 +145,23 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
     left: 0,
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    width: screen.width,
+    height: screen.height,
     zIndex: 0
   },
   drawer: {
     position: "absolute",
-    height: SCREEN_HEIGHT,
+    height: screen.height,
     zIndex: 1
+  },
+  overlay: {
+    position: "absolute",
+    left: 0,
+    width: screen.width,
+    height: screen.height,
+    zIndex: 0,
+    backgroundColor: "#000000",
+    zIndex: 999
   }
 });
 
