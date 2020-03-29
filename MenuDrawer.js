@@ -15,6 +15,7 @@ class MenuDrawer extends React.Component {
   constructor(props) {
     super(props);
     this.leftOffset = new Animated.Value(0);
+    this.rightOffset = new Animated.Value(screen.width);
     this.state = {
       expanded: false,
       fadeAnim: new Animated.Value(0.3)
@@ -30,6 +31,10 @@ class MenuDrawer extends React.Component {
         toValue: DRAWER_WIDTH,
         duration: animationTime
       }),
+      Animated.timing(this.rightOffset, {
+        toValue: -DRAWER_WIDTH,
+        duration: animationTime
+      }),
       Animated.timing(this.state.fadeAnim, {
         toValue: 1,
         duration: animationTime
@@ -43,6 +48,10 @@ class MenuDrawer extends React.Component {
     Animated.parallel([
       Animated.timing(this.leftOffset, {
         toValue: 0,
+        duration: animationTime
+      }),
+      Animated.timing(this.rightOffset, {
+        toValue: screen.width,
         duration: animationTime
       }),
       Animated.timing(this.state.fadeAnim, {
@@ -73,21 +82,35 @@ class MenuDrawer extends React.Component {
       menuWidth,
       open,
       overlay,
-      overlayOpacity
+      overlayOpacity,
+      leftAligned
     } = this.props;
     const { fadeAnim } = this.state;
     const animated = { transform: [{ translateX: this.leftOffset }] };
+    const animation = () => {
+      if (leftAligned) {
+        return {
+          transform: [{ translateX: this.leftOffset }],
+          left: -DRAWER_WIDTH
+        };
+      } else {
+        return {
+          transform: [{ translateX: this.rightOffset }],
+          left: screen.width
+        };
+      }
+    };
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     return (
       <View style={[styles.main, { width: screen.width }]}>
         <Animated.View
           style={[
-            animated,
+            animation(),
             styles.drawer,
             {
               width: DRAWER_WIDTH,
-              left: -DRAWER_WIDTH,
+              // left: -DRAWER_WIDTH,
               opacity: fadeAnim
             }
           ]}
@@ -159,7 +182,8 @@ MenuDrawer.defaultProps = {
   fade: true,
   opacity: 0.4,
   overlay: true,
-  overlayOpacity: 0.7
+  overlayOpacity: 0.7,
+  leftAligned: true
 };
 
 MenuDrawer.propTypes = {
@@ -169,7 +193,8 @@ MenuDrawer.propTypes = {
   fade: PropTypes.bool,
   opacity: PropTypes.number,
   overlay: PropTypes.bool,
-  overlayOpacity: PropTypes.number
+  overlayOpacity: PropTypes.number,
+  leftAligned: PropTypes.bool
 };
 
 const styles = StyleSheet.create({

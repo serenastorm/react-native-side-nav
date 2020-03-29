@@ -34,6 +34,7 @@ class App extends React.Component {
           animationTime={250}
           fade={true}
           opacity={0.4}
+          overlayOpacity={0.3}
         >
           <View style={styles.body}>
             <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
