@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import MenuDrawer from './MenuDrawer';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import MenuDrawer from "./MenuDrawer";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,26 +16,30 @@ class App extends React.Component {
 
   drawerContent = () => {
     return (
-      <TouchableOpacity onPress={this.toggleOpen} style={styles.animatedBox}>
-        <Text>Close</Text>
-      </TouchableOpacity>
+      <View style={styles.animatedBox}>
+        <TouchableOpacity onPress={this.toggleOpen}>
+          <Text>Close</Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <MenuDrawer 
-          open={this.state.open} 
+        <MenuDrawer
+          open={this.state.open}
           drawerContent={this.drawerContent()}
           menuWidth={45}
           animationTime={250}
-          overlay={true}
+          fade={true}
           opacity={0.4}
         >
-          <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
-            <Text>Open</Text>
-          </TouchableOpacity>
+          <View style={styles.body}>
+            <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
+              <Text>Open</Text>
+            </TouchableOpacity>
+          </View>
         </MenuDrawer>
       </View>
     );
@@ -58,10 +62,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F04812'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F04812"
   }
-})
+});
 
 export default App;

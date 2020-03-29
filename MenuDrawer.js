@@ -1,34 +1,30 @@
-import React from "react"
+import React from "react";
 import {
   Animated,
   Dimensions,
   StyleSheet,
   View,
   Text,
-  SafeAreaView,
-  Platform,
   TouchableOpacity
-} from "react-native"
-import PropTypes from "prop-types"
+} from "react-native";
+import PropTypes from "prop-types";
 
-const SCREEN_WIDTH = Dimensions.get("window").width
-const SCREEN_HEIGHT = Dimensions.get("window").height
-const isIOS = Platform.OS === "ios"
-const VERSION = parseInt(Platform.Version, 10)
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class MenuDrawer extends React.Component {
   constructor(props) {
-    super(props)
-    this.leftOffset = new Animated.Value(0)
+    super(props);
+    this.leftOffset = new Animated.Value(0);
     this.state = {
       expanded: false,
       fadeAnim: new Animated.Value(1)
-    }
+    };
   }
 
   openDrawer = () => {
-    const { menuWidth, animationTime, opacity } = this.props
-    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100)
+    const { menuWidth, animationTime, opacity } = this.props;
+    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100);
 
     Animated.parallel([
       Animated.timing(this.leftOffset, {
@@ -41,11 +37,11 @@ class MenuDrawer extends React.Component {
         duration: animationTime,
         useNativeDriver: true
       })
-    ]).start()
-  }
+    ]).start();
+  };
 
   closeDrawer = () => {
-    const { animationTime } = this.props
+    const { animationTime } = this.props;
 
     Animated.parallel([
       Animated.timing(this.leftOffset, {
@@ -58,61 +54,33 @@ class MenuDrawer extends React.Component {
         duration: animationTime,
         useNativeDriver: true
       })
-    ]).start()
-  }
+    ]).start();
+  };
 
   drawerFallback = () => {
     return (
       <TouchableOpacity onPress={this.closeDrawer}>
         <Text>Close</Text>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   componentDidUpdate() {
-    const { open } = this.props
+    const { open } = this.props;
 
-    open ? this.openDrawer() : this.closeDrawer()
+    open ? this.openDrawer() : this.closeDrawer();
   }
 
   renderPush = () => {
-    const { children, drawerContent, menuWidth } = this.props
-    const { fadeAnim } = this.state
-    const animated = { transform: [{ translateX: this.leftOffset }] }
-    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100)
-
-    if (isIOS && VERSION >= 11) {
-      return (
-        <Animated.View style={[animated, styles.main]}>
-          <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-            <View
-              style={[
-                styles.drawer,
-                {
-                  width: DRAWER_WIDTH,
-                  left: -DRAWER_WIDTH
-                }
-              ]}
-            >
-              {drawerContent ? drawerContent : this.drawerFallback()}
-            </View>
-            <Animated.View
-              style={[
-                styles.container,
-                {
-                  opacity: fadeAnim
-                }
-              ]}
-            >
-              {children}
-            </Animated.View>
-          </SafeAreaView>
-        </Animated.View>
-      )
-    }
+    const { children, drawerContent, menuWidth } = this.props;
+    const { fadeAnim } = this.state;
+    const animated = { transform: [{ translateX: this.leftOffset }] };
+    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100);
 
     return (
-      <Animated.View style={[animated, styles.main, { width: SCREEN_WIDTH + DRAWER_WIDTH }]}>
+      <Animated.View
+        style={[animated, styles.main, { width: SCREEN_WIDTH + DRAWER_WIDTH }]}
+      >
         <View
           style={[
             styles.drawer,
@@ -124,73 +92,13 @@ class MenuDrawer extends React.Component {
         >
           {drawerContent ? drawerContent : this.drawerFallback()}
         </View>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              opacity: fadeAnim
-            }
-          ]}
-        >
-          {children}
-        </Animated.View>
+        <View style={styles.container}>{children}</View>
       </Animated.View>
-    )
-  }
-
-  renderOverlay = () => {
-    const { children, drawerContent, menuWidth } = this.props
-    const { fadeAnim } = this.state
-    const animated = { transform: [{ translateX: this.leftOffset }] }
-    const DRAWER_WIDTH = SCREEN_WIDTH * (menuWidth / 100)
-
-    if (isIOS && VERSION >= 11) {
-      return (
-        <SafeAreaView style={[styles.main]}>
-          <Animated.View
-            style={[animated, styles.drawer, { width: DRAWER_WIDTH, left: -DRAWER_WIDTH }]}
-          >
-            {drawerContent ? drawerContent : this.drawerFallback()}
-          </Animated.View>
-          <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-            {children}
-          </Animated.View>
-        </SafeAreaView>
-      )
-    }
-
-    return (
-      <View style={styles.main}>
-        <Animated.View
-          style={[
-            animated,
-            styles.drawer,
-            {
-              width: DRAWER_WIDTH,
-              left: -DRAWER_WIDTH
-            }
-          ]}
-        >
-          {drawerContent ? drawerContent : this.drawerFallback()}
-        </Animated.View>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              opacity: fadeAnim
-            }
-          ]}
-        >
-          {children}
-        </Animated.View>
-      </View>
-    )
-  }
+    );
+  };
 
   render() {
-    const { overlay } = this.props
-
-    return overlay ? this.renderOverlay() : this.renderPush()
+    return this.renderPush();
   }
 }
 
@@ -198,17 +106,17 @@ MenuDrawer.defaultProps = {
   open: false,
   menuWidth: 100,
   animationTime: 200,
-  overlay: true,
+  fade: true,
   opacity: 0.4
-}
+};
 
 MenuDrawer.propTypes = {
   open: PropTypes.bool,
   menuWidth: PropTypes.number,
   animationTime: PropTypes.number,
-  overlay: PropTypes.bool,
+  fade: PropTypes.bool,
   opacity: PropTypes.number
-}
+};
 
 const styles = StyleSheet.create({
   main: {
@@ -228,6 +136,6 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT,
     zIndex: 1
   }
-})
+});
 
 export default MenuDrawer;
