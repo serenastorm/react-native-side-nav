@@ -40,8 +40,8 @@ class App extends React.Component {
         <SideMenu
           menuExpanded={this.state.menuExpanded}
           menuComponent={this.menuComponent()}
-          menuWidth={40}
-          fade={true}
+          menuWidth={30}
+          push={true}
         >
           <StatusBar barStyle={"light-content"} />
           <View style={styles.body}>

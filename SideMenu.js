@@ -12,13 +12,14 @@ class SideMenu extends React.Component {
       fadeAnim: new Animated.Value(0.3),
       overlayAnim: new Animated.Value(0),
       leftOffset: new Animated.Value(0),
-      rightOffset: new Animated.Value(screen.width)
+      rightOffset: new Animated.Value(screen.width),
+      rightOffsetPush: new Animated.Value(0)
     };
   }
 
   openDrawer = () => {
     const { menuWidth, animationDuration, overlayOpacity } = this.props;
-    const { leftOffset, rightOffset, fadeAnim, overlayAnim } = this.state;
+    const { leftOffset, rightOffset, rightOffsetPush, fadeAnim, overlayAnim } = this.state;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
@@ -27,6 +28,10 @@ class SideMenu extends React.Component {
         duration: animationDuration
       }),
       Animated.timing(rightOffset, {
+        toValue: -DRAWER_WIDTH,
+        duration: animationDuration
+      }),
+      Animated.timing(rightOffsetPush, {
         toValue: -DRAWER_WIDTH,
         duration: animationDuration
       }),
@@ -43,7 +48,7 @@ class SideMenu extends React.Component {
 
   closeDrawer = () => {
     const { animationDuration } = this.props;
-    const { leftOffset, rightOffset, fadeAnim, overlayAnim } = this.state;
+    const { leftOffset, rightOffset, rightOffsetPush, fadeAnim, overlayAnim } = this.state;
 
     Animated.parallel([
       Animated.timing(leftOffset, {
@@ -52,6 +57,10 @@ class SideMenu extends React.Component {
       }),
       Animated.timing(rightOffset, {
         toValue: screen.width,
+        duration: animationDuration
+      }),
+      Animated.timing(rightOffsetPush, {
+        toValue: 0,
         duration: animationDuration
       }),
       Animated.timing(fadeAnim, {
@@ -81,7 +90,7 @@ class SideMenu extends React.Component {
       leftAligned
     } = this.props;
     const { fadeAnim, overlayAnim, rightOffset, leftOffset } = this.state;
-    const animation = () => {
+    const drawerAnimation = () => {
       if (leftAligned) {
         return {
           transform: [{ translateX: leftOffset }],
@@ -100,7 +109,7 @@ class SideMenu extends React.Component {
       <View style={[styles.appContainer, { width: screen.width }]}>
         <Animated.View
           style={[
-            animation(),
+            drawerAnimation(),
             styles.drawer,
             {
               width: DRAWER_WIDTH,
@@ -132,26 +141,52 @@ class SideMenu extends React.Component {
       menuWidth,
       menuExpanded,
       overlay,
-      overlayOpacity
+      overlayOpacity,
+      leftAligned
     } = this.props;
-    const { leftOffset } = this.state;
-    const animated = { transform: [{ translateX: leftOffset }] };
+    const { rightOffsetPush, leftOffset } = this.state;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
+
+    const containerAnimation = () => {
+      if (leftAligned) {
+        return {
+          transform: [{ translateX: leftOffset }]
+        };
+      } else {
+        return {
+          transform: [{ translateX: rightOffsetPush }]
+        };
+      }
+    };
+
+    const drawerPosition = () => {
+      if (leftAligned) {
+        return {
+          left: -DRAWER_WIDTH
+        };
+      } else {
+        return {
+          left: screen.width
+        };
+      }
+    };
 
     return (
       <Animated.View
         style={[
-          animated,
+          containerAnimation(),
           styles.appContainer,
-          { width: screen.width + DRAWER_WIDTH }
+          {
+            width: screen.width + DRAWER_WIDTH
+          }
         ]}
       >
         <View
           style={[
+            drawerPosition(),
             styles.drawer,
             {
-              width: DRAWER_WIDTH,
-              left: -DRAWER_WIDTH
+              width: DRAWER_WIDTH
             }
           ]}
         >
