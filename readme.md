@@ -4,7 +4,18 @@
 
 # react-native-side-nav
 
-### Basic Usage
+[![Package version](https://img.shields.io/npm/v/react-native-side-nav.svg?style=flat-square)](https://npmjs.org/package/react-native-side-nav)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-side-nav.svg?style=flat-square)](https://npmjs.org/package/react-native-side-nav)
+
+## Contents
+
+- [Contents](#contents)
+- [Usage](#usage)
+- [Props](#props)
+- [Examples](#examples)
+
+### Usage
 
 #### Class Component
 
@@ -98,6 +109,7 @@ export default App;
 
 | Prop              | Default |   Type   | Description                                                                                           |
 | :---------------- | :-----: | :------: | :---------------------------------------------------------------------------------------------------- |
+| isExpanded        |  false  |  `bool`  | Set to `true` to open the menu.                                                                       |
 | menuWidth         |   80    | `number` | The width of the menu, as a percentage of the screen width.                                           |
 | animationDuration |   300   | `number` | The length of the animation in ms.                                                                    |
 | fade              |  false  |  `bool`  | Set to `true` to make the menu fade in on top of the content. Only works if `push` is set to `false`. |
@@ -105,7 +117,38 @@ export default App;
 | overlayOpacity    |   0.4   | `number` | Sets the opacity of the overlay.                                                                      |
 | leftAligned       |  false  |  `bool`  | Set to `true` to make the menu come in from the left side of the screen.                              |
 | push              |  false  |  `bool`  | Set to `true` to make the menu 'push' the app contents to one side.                                   |
-|                   |
+
+### Examples
+
+#### menuWidth
+
+<div >
+	<img src="img/menuWidth.gif" alt="" width="200px">
+</div>
+
+#### fade
+
+<div >
+	<img src="img/fade.gif" alt="" width="200px">
+</div>
+
+#### overlay & overlayOpacity
+
+<div >
+	<img src="img/overlay.gif" alt="" width="200px">
+</div>
+
+#### leftAligned
+
+<div >
+	<img src="img/leftAligned.gif" alt="" width="200px">
+</div>
+
+#### push
+
+<div >
+	<img src="img/push.gif" alt="" width="200px">
+</div>
 
 ## Questions
 
