@@ -4,9 +4,11 @@
 
 # react-native-side-nav
 
-[![Package version](https://img.shields.io/npm/v/react-native-side-nav.svg?style=flat-square)](https://npmjs.org/package/react-native-side-nav)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![npm downloads](https://img.shields.io/npm/dm/react-native-side-nav.svg?style=flat-square)](https://npmjs.org/package/react-native-side-nav)
+![platforms](https://img.shields.io/badge/platforms-iOS-brightgreen.svg?style=flat-square&colorB=b91d73)
+[![Package version](https://img.shields.io/npm/v/react-native-side-nav.svg?style=flat-square&colorB=b91d73)](https://npmjs.org/package/react-native-side-nav)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square&colorB=b91d73)](http://makeapullrequest.com)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-side-nav.svg?style=flat-square&colorB=b91d73)](https://npmjs.org/package/react-native-side-nav)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square&colorB=b91d73)](https://opensource.org/licenses/MIT)
 
 ## Contents
 
@@ -14,8 +16,9 @@
 - [Usage](#usage)
 - [Props](#props)
 - [Examples](#examples)
+- [Roadmap](#roadmap)
 
-### Usage
+## Usage
 
 #### Class Component
 
@@ -105,7 +108,7 @@ const App = () => {
 export default App;
 ```
 
-### Props
+## Props
 
 | Prop              | Default |   Type   | Description                                                                                           |
 | :---------------- | :-----: | :------: | :---------------------------------------------------------------------------------------------------- |
@@ -118,7 +121,7 @@ export default App;
 | leftAligned       |  false  |  `bool`  | Set to `true` to make the menu come in from the left side of the screen.                              |
 | push              |  false  |  `bool`  | Set to `true` to make the menu 'push' the app contents to one side.                                   |
 
-### Examples
+## Examples
 
 #### menuWidth
 
@@ -149,6 +152,14 @@ export default App;
 <div >
 	<img src="img/push.gif" alt="" width="200px">
 </div>
+
+## Roadmap
+
+- [ ] Add burger icon
+- [ ] Improve animation
+- [ ] Testing
+- [ ] Android support
+- [X] Add overlay opacity prop
 
 ## Questions
 
