@@ -18,12 +18,13 @@ class MenuDrawer extends React.Component {
     this.rightOffset = new Animated.Value(screen.width);
     this.state = {
       expanded: false,
-      fadeAnim: new Animated.Value(0.3)
+      fadeAnim: new Animated.Value(0.3),
+      overlayAnim: new Animated.Value(0)
     };
   }
 
   openDrawer = () => {
-    const { menuWidth, animationTime } = this.props;
+    const { menuWidth, animationTime, overlayOpacity } = this.props;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
@@ -37,6 +38,10 @@ class MenuDrawer extends React.Component {
       }),
       Animated.timing(this.state.fadeAnim, {
         toValue: 1,
+        duration: animationTime
+      }),
+      Animated.timing(this.state.overlayAnim, {
+        toValue: overlayOpacity,
         duration: animationTime
       })
     ]).start();
@@ -55,6 +60,10 @@ class MenuDrawer extends React.Component {
         duration: animationTime
       }),
       Animated.timing(this.state.fadeAnim, {
+        toValue: 0,
+        duration: animationTime
+      }),
+      Animated.timing(this.state.overlayAnim, {
         toValue: 0,
         duration: animationTime
       })
@@ -85,7 +94,7 @@ class MenuDrawer extends React.Component {
       overlayOpacity,
       leftAligned
     } = this.props;
-    const { fadeAnim } = this.state;
+    const { fadeAnim, overlayAnim } = this.state;
     const animated = { transform: [{ translateX: this.leftOffset }] };
     const animation = () => {
       if (leftAligned) {
@@ -120,7 +129,7 @@ class MenuDrawer extends React.Component {
         <View style={styles.container}>
           <View style={styles.overlay}>
             {open && overlay && (
-              <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
+              <Animated.View style={[styles.overlay, { opacity: overlayAnim }]} />
             )}
             {children}
           </View>
