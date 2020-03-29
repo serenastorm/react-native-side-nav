@@ -1,24 +1,34 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import MenuDrawer from "./MenuDrawer";
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity
+} from "react-native";
+import SideMenu from "./SideMenu";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      menuExpanded: false
     };
   }
 
-  toggleOpen = () => {
-    this.setState({ open: !this.state.open });
+  toggleMenu = () => {
+    this.setState({ menuExpanded: !this.state.menuExpanded });
   };
 
-  drawerContent = () => {
+  menuComponent = () => {
     return (
       <View style={styles.animatedBox}>
-        <TouchableOpacity onPress={this.toggleOpen}>
-          <Text>Close</Text>
+        <TouchableOpacity onPress={this.toggleMenu}>
+          <Text
+            style={{ color: "#ffffff", fontWeight: "bold", letterSpacing: 2 }}
+          >
+            MENU
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -26,47 +36,45 @@ class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <MenuDrawer
-          open={this.state.open}
-          drawerContent={this.drawerContent()}
-          push={true}
-          menuWidth={45}
-          animationTime={250}
+      <View>
+        <SideMenu
+          menuExpanded={this.state.menuExpanded}
+          menuComponent={this.menuComponent()}
+          menuWidth={40}
           fade={true}
-          opacity={0.4}
-          overlayOpacity={0.3}
         >
+          <StatusBar barStyle={"light-content"} />
           <View style={styles.body}>
-            <TouchableOpacity onPress={this.toggleOpen} style={styles.body}>
-              <Text>Open</Text>
+            <TouchableOpacity onPress={this.toggleMenu} style={styles.body}>
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  letterSpacing: 2
+                }}
+              >
+                CONTENT
+              </Text>
             </TouchableOpacity>
           </View>
-        </MenuDrawer>
+        </SideMenu>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30,
-    zIndex: 0
-  },
   animatedBox: {
     flex: 1,
-    backgroundColor: "#38C8EC",
-    padding: 10
+    backgroundColor: "#8E2DE2",
+    paddingTop: 50,
+    paddingLeft: 10
   },
   body: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F04812"
+    backgroundColor: "#4A00E0"
   }
 });
 

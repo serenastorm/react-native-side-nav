@@ -15,7 +15,7 @@ const window = Dimensions.get("window");
 const isIOS = Platform.OS === "ios";
 const VERSION = parseInt(Platform.Version, 10);
 
-class MenuDrawer extends React.Component {
+class SideMenu extends React.Component {
   constructor(props) {
     super(props);
     this.leftOffset = new Animated.Value(window.width);
@@ -94,11 +94,11 @@ class MenuDrawer extends React.Component {
   }
 }
 
-MenuDrawer.defaultProps = {
+SideMenu.defaultProps = {
   open: false
 };
 
-MenuDrawer.propTypes = {
+SideMenu.propTypes = {
   open: PropTypes.bool
 };
 
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MenuDrawer;
+export default SideMenu;

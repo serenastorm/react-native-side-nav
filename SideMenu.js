@@ -1,110 +1,95 @@
 import React from "react";
-import {
-  Animated,
-  Dimensions,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
-} from "react-native";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 
 const screen = Dimensions.get("window");
 
-class MenuDrawer extends React.Component {
+class SideMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.leftOffset = new Animated.Value(0);
-    this.rightOffset = new Animated.Value(screen.width);
     this.state = {
       expanded: false,
       fadeAnim: new Animated.Value(0.3),
-      overlayAnim: new Animated.Value(0)
+      overlayAnim: new Animated.Value(0),
+      leftOffset: new Animated.Value(0),
+      rightOffset: new Animated.Value(screen.width)
     };
   }
 
   openDrawer = () => {
-    const { menuWidth, animationTime, overlayOpacity } = this.props;
+    const { menuWidth, animationDuration, overlayOpacity } = this.props;
+    const { leftOffset, rightOffset, fadeAnim, overlayAnim } = this.state;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
-      Animated.timing(this.leftOffset, {
+      Animated.timing(leftOffset, {
         toValue: DRAWER_WIDTH,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.rightOffset, {
+      Animated.timing(rightOffset, {
         toValue: -DRAWER_WIDTH,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.state.fadeAnim, {
+      Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.state.overlayAnim, {
+      Animated.timing(overlayAnim, {
         toValue: overlayOpacity,
-        duration: animationTime
+        duration: animationDuration
       })
     ]).start();
   };
 
   closeDrawer = () => {
-    const { animationTime } = this.props;
+    const { animationDuration } = this.props;
+    const { leftOffset, rightOffset, fadeAnim, overlayAnim } = this.state;
 
     Animated.parallel([
-      Animated.timing(this.leftOffset, {
+      Animated.timing(leftOffset, {
         toValue: 0,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.rightOffset, {
+      Animated.timing(rightOffset, {
         toValue: screen.width,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.state.fadeAnim, {
+      Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: animationTime
+        duration: animationDuration
       }),
-      Animated.timing(this.state.overlayAnim, {
+      Animated.timing(overlayAnim, {
         toValue: 0,
-        duration: animationTime
+        duration: animationDuration
       })
     ]).start();
   };
 
-  drawerFallback = () => {
-    return (
-      <TouchableOpacity onPress={this.closeDrawer}>
-        <Text>Close</Text>
-      </TouchableOpacity>
-    );
-  };
-
   componentDidUpdate() {
-    const { open } = this.props;
+    const { menuExpanded } = this.props;
 
-    open ? this.openDrawer() : this.closeDrawer();
+    menuExpanded ? this.openDrawer() : this.closeDrawer();
   }
 
   renderOverlay = () => {
     const {
       children,
-      drawerContent,
+      menuComponent,
       menuWidth,
-      open,
+      menuExpanded,
       overlay,
-      overlayOpacity,
       leftAligned
     } = this.props;
-    const { fadeAnim, overlayAnim } = this.state;
-    const animated = { transform: [{ translateX: this.leftOffset }] };
+    const { fadeAnim, overlayAnim, rightOffset, leftOffset } = this.state;
     const animation = () => {
       if (leftAligned) {
         return {
-          transform: [{ translateX: this.leftOffset }],
+          transform: [{ translateX: leftOffset }],
           left: -DRAWER_WIDTH
         };
       } else {
         return {
-          transform: [{ translateX: this.rightOffset }],
+          transform: [{ translateX: rightOffset }],
           left: screen.width
         };
       }
@@ -112,24 +97,25 @@ class MenuDrawer extends React.Component {
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     return (
-      <View style={[styles.main, { width: screen.width }]}>
+      <View style={[styles.appContainer, { width: screen.width }]}>
         <Animated.View
           style={[
             animation(),
             styles.drawer,
             {
               width: DRAWER_WIDTH,
-              // left: -DRAWER_WIDTH,
               opacity: fadeAnim
             }
           ]}
         >
-          {drawerContent ? drawerContent : this.drawerFallback()}
+          {menuComponent}
         </Animated.View>
         <View style={styles.container}>
           <View style={styles.overlay}>
-            {open && overlay && (
-              <Animated.View style={[styles.overlay, { opacity: overlayAnim }]} />
+            {menuExpanded && overlay && (
+              <Animated.View
+                style={[styles.overlay, { opacity: overlayAnim }]}
+              />
             )}
             {children}
           </View>
@@ -142,18 +128,23 @@ class MenuDrawer extends React.Component {
   renderPush = () => {
     const {
       children,
-      drawerContent,
+      menuComponent,
       menuWidth,
-      open,
+      menuExpanded,
       overlay,
       overlayOpacity
     } = this.props;
-    const animated = { transform: [{ translateX: this.leftOffset }] };
+    const { leftOffset } = this.state;
+    const animated = { transform: [{ translateX: leftOffset }] };
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     return (
       <Animated.View
-        style={[animated, styles.main, { width: screen.width + DRAWER_WIDTH }]}
+        style={[
+          animated,
+          styles.appContainer,
+          { width: screen.width + DRAWER_WIDTH }
+        ]}
       >
         <View
           style={[
@@ -164,11 +155,11 @@ class MenuDrawer extends React.Component {
             }
           ]}
         >
-          {drawerContent ? drawerContent : this.drawerFallback()}
+          {menuComponent}
         </View>
         <View style={styles.container}>
           <View style={styles.overlay}>
-            {open && overlay && (
+            {menuExpanded && overlay && (
               <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
             )}
             {children}
@@ -185,24 +176,22 @@ class MenuDrawer extends React.Component {
   }
 }
 
-MenuDrawer.defaultProps = {
-  open: false,
-  menuWidth: 100,
-  animationTime: 200,
+SideMenu.defaultProps = {
+  menuExpanded: false,
+  menuWidth: 80,
+  animationDuration: 300,
   fade: false,
-  opacity: 0.4,
   overlay: false,
   overlayOpacity: 0.4,
   leftAligned: false,
   push: false
 };
 
-MenuDrawer.propTypes = {
-  open: PropTypes.bool,
+SideMenu.propTypes = {
+  menuExpanded: PropTypes.bool,
   menuWidth: PropTypes.number,
-  animationTime: PropTypes.number,
+  animationDuration: PropTypes.number,
   fade: PropTypes.bool,
-  opacity: PropTypes.number,
   overlay: PropTypes.bool,
   overlayOpacity: PropTypes.number,
   leftAligned: PropTypes.bool,
@@ -210,10 +199,10 @@ MenuDrawer.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  main: {
+  appContainer: {
     position: "absolute",
     left: 0,
-    top: 5
+    top: 0
   },
   container: {
     position: "absolute",
@@ -238,4 +227,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MenuDrawer;
+export default SideMenu;
