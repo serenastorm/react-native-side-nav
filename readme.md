@@ -156,8 +156,8 @@ export default App;
 
 - [ ] Add burger icon
 - [ ] Improve animation
-- [ ] Testing
 - [ ] Android support
+- [X] Testing
 - [X] Add overlay opacity prop
 
 ## Questions
