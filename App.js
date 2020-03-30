@@ -7,6 +7,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import SideMenu from "./SideMenu";
+import BurgerIcon from "./BurgerIcon";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 class App extends React.Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class App extends React.Component {
           menuComponent={this.menuComponent()}
           menuWidth={100}
           push={false}
+          onPress={this.toggleMenu}
         >
           <StatusBar barStyle={"light-content"} />
           <View style={styles.body}>

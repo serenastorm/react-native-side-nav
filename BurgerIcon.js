@@ -1,5 +1,13 @@
 import React from "react";
-import { Animated, Text, Dimensions, StyleSheet, View } from "react-native";
+import {
+  Animated,
+  Text,
+  TouchableWithoutFeedback,
+  Dimensions,
+  StyleSheet,
+  Button,
+  View
+} from "react-native";
 import PropTypes from "prop-types";
 
 const screen = Dimensions.get("window");
@@ -8,13 +16,11 @@ class BurgerIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
+      expanded: new Animated.Value(0),
       opacity: new Animated.Value(1),
-      translateXtop: new Animated.Value(0),
-      translateYtop: new Animated.Value(0),
+      translateYtop: new Animated.Value(11),
       rotateTop: new Animated.Value(0),
-      translateXbottom: new Animated.Value(0),
-      translateYbottom: new Animated.Value(16),
+      translateYbottom: new Animated.Value(26),
       rotateBottom: new Animated.Value(0)
     };
   }
@@ -23,12 +29,11 @@ class BurgerIcon extends React.Component {
     const { animationDuration } = this.props;
     const {
       opacity,
-      translateXtop,
       translateYtop,
       rotateTop,
-      translateXbottom,
       translateYbottom,
-      rotateBottom
+      rotateBottom,
+      expanded
     } = this.state;
 
     Animated.parallel([
@@ -36,30 +41,26 @@ class BurgerIcon extends React.Component {
         toValue: 0,
         duration: animationDuration
       }),
-      Animated.timing(translateXtop, {
-        toValue: 0,
-        duration: animationDuration
-      }),
       Animated.timing(translateYtop, {
-        toValue: 8,
+        toValue: 18,
         duration: animationDuration
       }),
       Animated.timing(rotateTop, {
         toValue: 45,
         duration: animationDuration
       }),
-      Animated.timing(translateXbottom, {
-        toValue: 0,
-        duration: animationDuration
-      }),
       Animated.timing(translateYbottom, {
-        toValue: 8,
+        toValue: 18,
         duration: animationDuration
       }),
-        Animated.timing(rotateBottom, {
-          toValue: -45,
-          duration: animationDuration
-        })
+      Animated.timing(rotateBottom, {
+        toValue: -45,
+        duration: animationDuration
+      }),
+      Animated.timing(expanded, {
+        toValue: 11,
+        duration: animationDuration
+      })
     ]).start();
   };
 
@@ -67,12 +68,11 @@ class BurgerIcon extends React.Component {
     const { animationDuration } = this.props;
     const {
       opacity,
-      translateXtop,
       translateYtop,
       rotateTop,
-      translateXbottom,
       translateYbottom,
-      rotateBottom
+      rotateBottom,
+      expanded
     } = this.state;
 
     Animated.parallel([
@@ -80,47 +80,44 @@ class BurgerIcon extends React.Component {
         toValue: 1,
         duration: animationDuration
       }),
-      Animated.timing(translateXtop, {
-        toValue: 0,
-        duration: animationDuration
-      }),
       Animated.timing(translateYtop, {
-        toValue: 0,
+        toValue: 11,
         duration: animationDuration
       }),
       Animated.timing(rotateTop, {
         toValue: 0,
         duration: animationDuration
       }),
-      Animated.timing(translateXbottom, {
+      Animated.timing(translateYbottom, {
+        toValue: 26,
+        duration: animationDuration
+      }),
+      Animated.timing(rotateBottom, {
         toValue: 0,
         duration: animationDuration
       }),
-      Animated.timing(translateYbottom, {
-        toValue: 16,
+      Animated.timing(expanded, {
+        toValue: 0,
         duration: animationDuration
-      }),
-        Animated.timing(rotateBottom, {
-          toValue: 0,
-          duration: animationDuration
-        })
+      })
     ]).start();
   };
 
   componentDidUpdate() {
     const { menuExpanded } = this.props;
-
     menuExpanded ? this.openDrawerBurger() : this.closeDrawerBurger();
   }
+
+  toggleMenu = () => {
+    this.state.expanded ? this.openDrawerBurger() : this.closeDrawerBurger();
+  };
 
   render() {
     const { leftAligned } = this.props;
     const {
       opacity,
-      translateXtop,
       translateYtop,
       rotateTop,
-      translateXbottom,
       translateYbottom,
       rotateBottom
     } = this.state;
@@ -138,35 +135,39 @@ class BurgerIcon extends React.Component {
     };
 
     return (
-      <View style={[styles.burgerIcon, burgerPosition()]}>
-        <Animated.View
-          style={{
-            ...styles.burgerLine,
-            ...styles.burgerLineTop,
-            transform: [
-              {
-                rotate: rotateTop.interpolate({
-                  inputRange: [0, 360],
-                  outputRange: ["0deg", "360deg"]
-                })
-              }
-            ],
-            top: translateYtop,
-            left: translateXtop
-          }}
-        />
-        <Animated.View
-          style={{
-            ...styles.burgerLine,
-            ...styles.burgerLineMiddle,
-            opacity: opacity
-          }}
-        />
-        <Animated.View
-          style={{
-            ...styles.burgerLine,
-            ...styles.burgerLineBottom,
-            transform: [
+      <TouchableWithoutFeedback
+        title="Press me"
+        onPress={this.props.onPress}
+        style={styles.iconContainer}
+      >
+        <View style={[styles.burgerIcon, burgerPosition()]}>
+          <Animated.View
+            style={{
+              ...styles.burgerLine,
+              ...styles.burgerLineTop,
+              transform: [
+                {
+                  rotate: rotateTop.interpolate({
+                    inputRange: [0, 360],
+                    outputRange: ["0deg", "360deg"]
+                  })
+                }
+              ],
+              top: translateYtop
+            }}
+          />
+          <Animated.View
+            style={{
+              ...styles.burgerLine,
+              ...styles.burgerLineMiddle,
+              opacity: opacity
+            }}
+          />
+          <Animated.View
+            style={{
+              ...styles.burgerLine,
+              ...styles.burgerLineBottom,
+              transform: [
                 {
                   rotate: rotateBottom.interpolate({
                     inputRange: [-360, -0],
@@ -174,11 +175,11 @@ class BurgerIcon extends React.Component {
                   })
                 }
               ],
-              top: translateYbottom,
-              left: translateXbottom
-          }}
-        />
-      </View>
+              top: translateYbottom
+            }}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -194,10 +195,15 @@ BurgerIcon.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  iconContainer: {
+  },
   burgerIcon: {
+    backgroundColor: "black",
+    height: 40,
+    width: 40,
     position: "absolute",
-    top: 40,
-    zIndex: 100
+    top: 30,
+    zIndex: 200
   },
   text: {
     color: "white",
@@ -207,14 +213,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: 30,
     height: 3,
+    left: 5,
     position: "absolute"
   },
   burgerLineMiddle: {
-    top: 8
+    top: 18
   }
-  //   burgerLineBottom: {
-  //     top: 16
-  //   }
 });
 
 export default BurgerIcon;

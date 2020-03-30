@@ -2,6 +2,7 @@ import React from "react";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 import BurgerIcon from "./BurgerIcon";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const screen = Dimensions.get("window");
 
@@ -125,6 +126,7 @@ class SideMenu extends React.Component {
           menuExpanded={menuExpanded}
           leftAligned={leftAligned}
           animationDuration={animationDuration}
+          onPress={this.props.onPress}
         />
         <Animated.View
           style={[
@@ -151,6 +153,10 @@ class SideMenu extends React.Component {
         </View>
       </View>
     );
+  };
+
+  toggleMenu = () => {
+    this.setState({ menuExpanded: !this.state.menuExpanded });
   };
 
   renderPush = () => {
@@ -205,6 +211,7 @@ class SideMenu extends React.Component {
           menuExpanded={menuExpanded}
           leftAligned={leftAligned}
           animationDuration={animationDuration}
+          onPress={this.props.onPress}
         />
         <View
           style={[
