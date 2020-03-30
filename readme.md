@@ -25,7 +25,7 @@
 ```jsx
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import SideMenu from "./SideMenu";
+import SideMenu from "react-native-side-nav";
 
 class App extends React.Component {
   constructor(props) {
@@ -73,7 +73,7 @@ export default App;
 ```jsx
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import SideMenu from "./SideMenu";
+import SideMenu from "react-native-side-nav";
 
 const App = () => {
   const [menuExpanded, setMenuExpanded] = useState(false);
