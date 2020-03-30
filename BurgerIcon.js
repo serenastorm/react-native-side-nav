@@ -111,7 +111,6 @@ class BurgerIcon extends React.Component {
     const { menuExpanded } = this.props;
 
     menuExpanded ? this.openDrawerBurger() : this.closeDrawerBurger();
-    console.warn(this.state.translateYtop);
   }
 
   render() {
