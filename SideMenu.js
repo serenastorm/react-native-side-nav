@@ -1,6 +1,7 @@
 import React from "react";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
+import BurgerIcon from "./BurgerIcon";
 
 const screen = Dimensions.get("window");
 
@@ -19,7 +20,13 @@ class SideMenu extends React.Component {
 
   openDrawer = () => {
     const { menuWidth, animationDuration, overlayOpacity } = this.props;
-    const { leftOffset, rightOffset, rightOffsetPush, fadeAnim, overlayAnim } = this.state;
+    const {
+      leftOffset,
+      rightOffset,
+      rightOffsetPush,
+      fadeAnim,
+      overlayAnim
+    } = this.state;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
 
     Animated.parallel([
@@ -48,7 +55,13 @@ class SideMenu extends React.Component {
 
   closeDrawer = () => {
     const { animationDuration } = this.props;
-    const { leftOffset, rightOffset, rightOffsetPush, fadeAnim, overlayAnim } = this.state;
+    const {
+      leftOffset,
+      rightOffset,
+      rightOffsetPush,
+      fadeAnim,
+      overlayAnim
+    } = this.state;
 
     Animated.parallel([
       Animated.timing(leftOffset, {
@@ -87,7 +100,8 @@ class SideMenu extends React.Component {
       menuWidth,
       menuExpanded,
       overlay,
-      leftAligned
+      leftAligned,
+      animationDuration
     } = this.props;
     const { fadeAnim, overlayAnim, rightOffset, leftOffset } = this.state;
     const drawerAnimation = () => {
@@ -107,6 +121,11 @@ class SideMenu extends React.Component {
 
     return (
       <View style={[styles.appContainer, { width: screen.width }]}>
+        <BurgerIcon
+          menuExpanded={menuExpanded}
+          leftAligned={leftAligned}
+          animationDuration={animationDuration}
+        />
         <Animated.View
           style={[
             drawerAnimation(),
@@ -142,6 +161,7 @@ class SideMenu extends React.Component {
       menuExpanded,
       overlay,
       overlayOpacity,
+      animationDuration,
       leftAligned
     } = this.props;
     const { rightOffsetPush, leftOffset } = this.state;
@@ -181,6 +201,11 @@ class SideMenu extends React.Component {
           }
         ]}
       >
+        <BurgerIcon
+          menuExpanded={menuExpanded}
+          leftAligned={leftAligned}
+          animationDuration={animationDuration}
+        />
         <View
           style={[
             drawerPosition(),
