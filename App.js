@@ -42,9 +42,11 @@ class App extends React.Component {
         <SideMenu
           menuExpanded={this.state.menuExpanded}
           menuComponent={this.menuComponent()}
-          menuWidth={100}
-          push={false}
+          menuWidth={70}
+          push={true}
           onPress={this.toggleMenu}
+          burgerIcon={true}
+          burgerWidth={40}
         >
           <StatusBar barStyle={"light-content"} />
           <View style={styles.body}>

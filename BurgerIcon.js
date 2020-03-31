@@ -1,26 +1,23 @@
 import React from "react";
 import {
   Animated,
-  Text,
   TouchableWithoutFeedback,
   Dimensions,
   StyleSheet,
-  Button,
   View
 } from "react-native";
 import PropTypes from "prop-types";
 
 const screen = Dimensions.get("window");
-
 class BurgerIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expanded: new Animated.Value(0),
       opacity: new Animated.Value(1),
-      translateYtop: new Animated.Value(11),
+      translateYtop: new Animated.Value(20),
       rotateTop: new Animated.Value(0),
-      translateYbottom: new Animated.Value(26),
+      translateYbottom: new Animated.Value(70),
       rotateBottom: new Animated.Value(0)
     };
   }
@@ -42,7 +39,7 @@ class BurgerIcon extends React.Component {
         duration: animationDuration
       }),
       Animated.timing(translateYtop, {
-        toValue: 18,
+        toValue: 45,
         duration: animationDuration
       }),
       Animated.timing(rotateTop, {
@@ -50,7 +47,7 @@ class BurgerIcon extends React.Component {
         duration: animationDuration
       }),
       Animated.timing(translateYbottom, {
-        toValue: 18,
+        toValue: 45,
         duration: animationDuration
       }),
       Animated.timing(rotateBottom, {
@@ -81,7 +78,7 @@ class BurgerIcon extends React.Component {
         duration: animationDuration
       }),
       Animated.timing(translateYtop, {
-        toValue: 11,
+        toValue: 20,
         duration: animationDuration
       }),
       Animated.timing(rotateTop, {
@@ -89,7 +86,7 @@ class BurgerIcon extends React.Component {
         duration: animationDuration
       }),
       Animated.timing(translateYbottom, {
-        toValue: 26,
+        toValue: 70,
         duration: animationDuration
       }),
       Animated.timing(rotateBottom, {
@@ -113,7 +110,13 @@ class BurgerIcon extends React.Component {
   };
 
   render() {
-    const { leftAligned } = this.props;
+    const {
+      burgerIconColor1,
+      burgerIconColor2,
+      burgerWidth,
+      menuExpanded,
+      onPress
+    } = this.props;
     const {
       opacity,
       translateYtop,
@@ -122,62 +125,77 @@ class BurgerIcon extends React.Component {
       rotateBottom
     } = this.state;
 
-    const burgerPosition = () => {
-      if (leftAligned) {
-        return {
-          left: 30
-        };
-      } else {
-        return {
-          left: screen.width - 60
-        };
+    const backgroundColor = () => {
+      if (!menuExpanded) {
+        return burgerIconColor1;
+      } else if (menuExpanded && !burgerIconColor2) {
+        return burgerIconColor1;
+      } else if (menuExpanded && burgerIconColor2) {
+        return burgerIconColor2;
       }
     };
 
     return (
       <TouchableWithoutFeedback
         title="Press me"
-        onPress={this.props.onPress}
-        style={styles.iconContainer}
+        onPress={onPress}
+        style={styles.buttonContainer}
       >
-        <View style={[styles.burgerIcon, burgerPosition()]}>
-          <Animated.View
+        <View style={styles.iconContainer}>
+          <View
             style={{
-              ...styles.burgerLine,
-              ...styles.burgerLineTop,
-              transform: [
-                {
-                  rotate: rotateTop.interpolate({
-                    inputRange: [0, 360],
-                    outputRange: ["0deg", "360deg"]
-                  })
-                }
-              ],
-              top: translateYtop
+              ...styles.burgerIcon,
+              width: burgerWidth,
+              height: burgerWidth
             }}
-          />
-          <Animated.View
-            style={{
-              ...styles.burgerLine,
-              ...styles.burgerLineMiddle,
-              opacity: opacity
-            }}
-          />
-          <Animated.View
-            style={{
-              ...styles.burgerLine,
-              ...styles.burgerLineBottom,
-              transform: [
-                {
-                  rotate: rotateBottom.interpolate({
-                    inputRange: [-360, -0],
-                    outputRange: ["-360deg", "-0deg"]
-                  })
-                }
-              ],
-              top: translateYbottom
-            }}
-          />
+          >
+            <Animated.View
+              style={{
+                ...styles.burgerLine,
+                ...styles.burgerLineTop,
+                backgroundColor: backgroundColor(),
+                transform: [
+                  {
+                    rotate: rotateTop.interpolate({
+                      inputRange: [0, 360],
+                      outputRange: ["0deg", "360deg"]
+                    })
+                  }
+                ],
+                top: translateYtop.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ["0%", "100%"]
+                })
+              }}
+            />
+            <Animated.View
+              style={{
+                ...styles.burgerLine,
+                ...styles.burgerLineMiddle,
+                backgroundColor: backgroundColor(),
+                opacity: opacity
+              }}
+            />
+            <Animated.View
+              style={{
+                ...styles.burgerLine,
+                ...styles.burgerLineBottom,
+                backgroundColor: backgroundColor(),
+                transform: [
+                  {
+                    rotate: rotateBottom.interpolate({
+                      inputRange: [-360, -0],
+                      outputRange: ["-360deg", "-0deg"]
+                    })
+                  }
+                ],
+                top: translateYbottom.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: ["0%", "100%"]
+                })
+              }}
+            />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -195,29 +213,30 @@ BurgerIcon.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {},
   iconContainer: {
+    position: "absolute",
+    // top: 30,
+    zIndex: 200,
+    padding: 5
   },
   burgerIcon: {
-    backgroundColor: "black",
-    height: 40,
-    width: 40,
-    position: "absolute",
-    top: 30,
-    zIndex: 200
+    width: "100%",
+    height: "100%",
+    position: "relative"
   },
   text: {
     color: "white",
     fontSize: 40
   },
   burgerLine: {
-    backgroundColor: "white",
-    width: 30,
-    height: 3,
-    left: 5,
+    width: "100%",
+    height: "10%",
+    borderRadius: 1,
     position: "absolute"
   },
   burgerLineMiddle: {
-    top: 18
+    top: "45%"
   }
 });
 

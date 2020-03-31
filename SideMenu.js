@@ -89,7 +89,7 @@ class SideMenu extends React.Component {
   };
 
   componentDidUpdate() {
-    const { menuExpanded } = this.props;
+    const { menuExpanded, burgerIconColor1, burgerIconColor2 } = this.props;
 
     menuExpanded ? this.openDrawer() : this.closeDrawer();
   }
@@ -102,7 +102,11 @@ class SideMenu extends React.Component {
       menuExpanded,
       overlay,
       leftAligned,
-      animationDuration
+      burgerIcon,
+      burgerIconColor1,
+      burgerIconColor2,
+      animationDuration,
+      burgerWidth
     } = this.props;
     const { fadeAnim, overlayAnim, rightOffset, leftOffset } = this.state;
     const drawerAnimation = () => {
@@ -122,12 +126,17 @@ class SideMenu extends React.Component {
 
     return (
       <View style={[styles.appContainer, { width: screen.width }]}>
-        <BurgerIcon
-          menuExpanded={menuExpanded}
-          leftAligned={leftAligned}
-          animationDuration={animationDuration}
-          onPress={this.props.onPress}
-        />
+        {burgerIcon && (
+          <BurgerIcon
+            menuExpanded={menuExpanded}
+            leftAligned={leftAligned}
+            animationDuration={animationDuration}
+            onPress={this.props.onPress}
+            burgerIconColor1={burgerIconColor1}
+            burgerIconColor2={burgerIconColor2}
+            burgerWidth={burgerWidth}
+          />
+        )}
         <Animated.View
           style={[
             drawerAnimation(),
@@ -168,7 +177,11 @@ class SideMenu extends React.Component {
       overlay,
       overlayOpacity,
       animationDuration,
-      leftAligned
+      burgerIcon,
+      burgerIconColor1,
+      burgerIconColor2,
+      leftAligned,
+      burgerWidth
     } = this.props;
     const { rightOffsetPush, leftOffset } = this.state;
     const DRAWER_WIDTH = screen.width * (menuWidth / 100);
@@ -198,42 +211,49 @@ class SideMenu extends React.Component {
     };
 
     return (
-      <Animated.View
-        style={[
-          containerAnimation(),
-          styles.appContainer,
-          {
-            width: screen.width + DRAWER_WIDTH
-          }
-        ]}
-      >
-        <BurgerIcon
-          menuExpanded={menuExpanded}
-          leftAligned={leftAligned}
-          animationDuration={animationDuration}
-          onPress={this.props.onPress}
-        />
-        <View
+      <View style={styles.appContainer}>
+        {burgerIcon && (
+          <BurgerIcon
+            menuExpanded={menuExpanded}
+            leftAligned={leftAligned}
+            animationDuration={animationDuration}
+            onPress={this.props.onPress}
+            burgerIconColor1={burgerIconColor1}
+            burgerIconColor2={burgerIconColor2}
+            burgerWidth={burgerWidth}
+          />
+        )}
+        <Animated.View
           style={[
-            drawerPosition(),
-            styles.drawer,
+            containerAnimation(),
+            styles.appContainer,
             {
-              width: DRAWER_WIDTH
+              width: screen.width + DRAWER_WIDTH
             }
           ]}
         >
-          {menuComponent}
-        </View>
-        <View style={styles.container}>
-          <View style={styles.overlay}>
-            {menuExpanded && overlay && (
-              <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
-            )}
+          <View
+            style={[
+              drawerPosition(),
+              styles.drawer,
+              {
+                width: DRAWER_WIDTH
+              }
+            ]}
+          >
+            {menuComponent}
+          </View>
+          <View style={styles.container}>
+            <View style={styles.overlay}>
+              {menuExpanded && overlay && (
+                <View style={{ ...styles.overlay, opacity: overlayOpacity }} />
+              )}
+              {children}
+            </View>
             {children}
           </View>
-          {children}
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </View>
     );
   };
 
@@ -251,7 +271,10 @@ SideMenu.defaultProps = {
   overlay: false,
   overlayOpacity: 0.4,
   leftAligned: false,
-  push: false
+  push: false,
+  burgerIcon: false,
+  burgerIconColor1: "#ffffff",
+  burgerWidth: 35
 };
 
 SideMenu.propTypes = {
@@ -262,7 +285,11 @@ SideMenu.propTypes = {
   overlay: PropTypes.bool,
   overlayOpacity: PropTypes.number,
   leftAligned: PropTypes.bool,
-  push: PropTypes.bool
+  push: PropTypes.bool,
+  burgerIcon: PropTypes.bool,
+  burgerIconColor1: PropTypes.string,
+  burgerIconColor2: PropTypes.string,
+  burgerWidth: PropTypes.number
 };
 
 const styles = StyleSheet.create({
