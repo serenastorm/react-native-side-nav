@@ -57,12 +57,12 @@ class App extends React.Component {
           menuExpanded={this.state.menuExpanded}
           menuComponent={this.menuComponent()}
         >
-        // Your App components
+          // Your App components
         </SideMenu>
       </View>
     );
   }
-};
+}
 
 export default App;
 ```
@@ -109,16 +109,22 @@ export default App;
 
 ## Props
 
-| Prop              | Default |   Type   | Description                                                                                           |
-| :---------------- | :-----: | :------: | :---------------------------------------------------------------------------------------------------- |
-| isExpanded        |  false  |  `bool`  | Set to `true` to open the menu.                                                                       |
-| menuWidth         |   80    | `number` | The width of the menu, as a percentage of the screen width.                                           |
-| animationDuration |   300   | `number` | The length of the animation in ms.                                                                    |
-| fade              |  false  |  `bool`  | Set to `true` to make the menu fade in on top of the content. Only works if `push` is set to `false`. |
-| overlay           |  false  |  `bool`  | Set to `true` adds a dark overlay on top of the app when the menu is open.                            |
-| overlayOpacity    |   0.4   | `number` | Sets the opacity of the overlay.                                                                      |
-| leftAligned       |  false  |  `bool`  | Set to `true` to make the menu come in from the left side of the screen.                              |
-| push              |  false  |  `bool`  | Set to `true` to make the menu 'push' the app contents to one side.                                   |
+| Prop                         |  Default  |   Type   | Description                                                                                                                                                                                         |
+| :--------------------------- | :-------: | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| menuExpanded                 |   false   |  `bool`  | Set to `true` to open the menu.                                                                                                                                                                     |
+| menuComponent()              |           | `object` | The content of your drawer. (see example)                                                                                                                                                           |
+| menuWidth _optional_         |    80     | `number` | The width of the menu, as a percentage of the screen width.                                                                                                                                         |
+| animationDuration _optional_ |    300    | `number` | The length of the animation in ms.                                                                                                                                                                  |
+| fade _optional_              |   false   |  `bool`  | Set to `true` to make the menu fade in on top of the content. Only works if `push` is set to `false`.                                                                                               |
+| overlay _optional_           |   false   |  `bool`  | Set to `true` adds a dark overlay on top of the app when the menu is open.                                                                                                                          |
+| overlayOpacity _optional_    |    0.4    | `number` | Sets the opacity of the overlay.                                                                                                                                                                    |
+| leftAligned _optional_       |   false   |  `bool`  | Set to `true` to make the menu come in from the left side of the screen.                                                                                                                            |
+| push _optional_              |   false   |  `bool`  | Set to `true` to make the menu 'push' the app contents to one side.                                                                                                                                 |
+| burgerIcon _optional_        |   false   |  `bool`  | Set to `true` to add an absolutely positioned burger icon to toggle your menu.                                                                                                                      |
+| burgerWidth _optional_       |    35     | `number` | The width of the burger icon.                                                                                                                                                                       |
+| burgerIconStyles _optional_  |    {}     | `object` | Edit the burger X and Y position. Example: `burgerIconStyles={{top: 30, left: 20}}`. You can try passing other styles although they haven't been tested. Use the burger icon color props instead.   |
+| burgerIconColor1 _optional_  | '#ffffff' | `string` | The color you want your burger icon to be.                                                                                                                                                          |
+| burgerIconColor2 _optional_  |    ''     | `string` | If the background of your menu doesn't match the rest of your app, you can change the color of the icon when the menu is expanded. If you don't set this value it will default to burgerIconColor1. |
 
 ## Examples
 
@@ -152,13 +158,43 @@ export default App;
 	<img src="img/push.gif" alt="" width="200px">
 </div>
 
+#### burgerIcon
+
+<div >
+	<img src="img/burgerIcon.gif" alt="" width="200px">
+</div>
+
+#### burgerWidth
+
+<div >
+	<img src="img/burgerWidth.gif" alt="" width="200px">
+</div>
+
+#### burgerIconStyles
+
+<div >
+	<img src="img/burgerIconStyles.gif" alt="" width="200px">
+</div>
+
+#### burgerIconColor1
+
+<div >
+	<img src="img/burgerIconColor1.gif" alt="" width="200px">
+</div>
+
+#### burgerIconColor2
+
+<div >
+	<img src="img/burgerIconColor2.gif" alt="" width="200px">
+</div>
+
 ## Roadmap
 
-- [ ] Add burger icon
 - [ ] Improve animation
 - [ ] Android support
-- [X] Testing
-- [X] Add overlay opacity prop
+- [x] Add burger icon
+- [x] Testing
+- [x] Add overlay opacity prop
 
 ## Questions
 

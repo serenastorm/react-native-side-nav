@@ -106,6 +106,7 @@ class SideMenu extends React.Component {
       burgerIconColor1,
       burgerIconColor2,
       animationDuration,
+      burgerIconStyles,
       burgerWidth
     } = this.props;
     const { fadeAnim, overlayAnim, rightOffset, leftOffset } = this.state;
@@ -135,6 +136,7 @@ class SideMenu extends React.Component {
             burgerIconColor1={burgerIconColor1}
             burgerIconColor2={burgerIconColor2}
             burgerWidth={burgerWidth}
+            burgerIconStyles={burgerIconStyles}
           />
         )}
         <Animated.View
@@ -181,6 +183,7 @@ class SideMenu extends React.Component {
       burgerIconColor1,
       burgerIconColor2,
       leftAligned,
+      burgerIconStyles,
       burgerWidth
     } = this.props;
     const { rightOffsetPush, leftOffset } = this.state;
@@ -221,6 +224,7 @@ class SideMenu extends React.Component {
             burgerIconColor1={burgerIconColor1}
             burgerIconColor2={burgerIconColor2}
             burgerWidth={burgerWidth}
+            burgerIconStyles={burgerIconStyles}
           />
         )}
         <Animated.View
@@ -279,6 +283,7 @@ SideMenu.defaultProps = {
 
 SideMenu.propTypes = {
   menuExpanded: PropTypes.bool,
+  menuComponent: PropTypes.object,
   menuWidth: PropTypes.number,
   animationDuration: PropTypes.number,
   fade: PropTypes.bool,
@@ -289,6 +294,7 @@ SideMenu.propTypes = {
   burgerIcon: PropTypes.bool,
   burgerIconColor1: PropTypes.string,
   burgerIconColor2: PropTypes.string,
+  burgerIconStyles: PropTypes.object,
   burgerWidth: PropTypes.number
 };
 

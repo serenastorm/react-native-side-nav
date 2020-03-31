@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 
-const screen = Dimensions.get("window");
 class BurgerIcon extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +22,6 @@ class BurgerIcon extends React.Component {
   }
 
   openDrawerBurger = () => {
-    const { animationDuration } = this.props;
     const {
       opacity,
       translateYtop,
@@ -36,33 +34,32 @@ class BurgerIcon extends React.Component {
     Animated.parallel([
       Animated.timing(opacity, {
         toValue: 0,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(translateYtop, {
         toValue: 45,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(rotateTop, {
         toValue: 45,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(translateYbottom, {
         toValue: 45,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(rotateBottom, {
         toValue: -45,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(expanded, {
         toValue: 11,
-        duration: animationDuration
+        duration: 300
       })
     ]).start();
   };
 
   closeDrawerBurger = () => {
-    const { animationDuration } = this.props;
     const {
       opacity,
       translateYtop,
@@ -75,27 +72,27 @@ class BurgerIcon extends React.Component {
     Animated.parallel([
       Animated.timing(opacity, {
         toValue: 1,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(translateYtop, {
         toValue: 20,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(rotateTop, {
         toValue: 0,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(translateYbottom, {
         toValue: 70,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(rotateBottom, {
         toValue: 0,
-        duration: animationDuration
+        duration: 300
       }),
       Animated.timing(expanded, {
         toValue: 0,
-        duration: animationDuration
+        duration: 300
       })
     ]).start();
   };
@@ -115,7 +112,8 @@ class BurgerIcon extends React.Component {
       burgerIconColor2,
       burgerWidth,
       menuExpanded,
-      onPress
+      onPress,
+      burgerIconStyles
     } = this.props;
     const {
       opacity,
@@ -141,7 +139,7 @@ class BurgerIcon extends React.Component {
         onPress={onPress}
         style={styles.buttonContainer}
       >
-        <View style={styles.iconContainer}>
+        <View style={{ ...styles.iconContainer, ...burgerIconStyles }}>
           <View
             style={{
               ...styles.burgerIcon,
@@ -216,7 +214,6 @@ const styles = StyleSheet.create({
   buttonContainer: {},
   iconContainer: {
     position: "absolute",
-    // top: 30,
     zIndex: 200,
     padding: 5
   },
@@ -224,10 +221,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "relative"
-  },
-  text: {
-    color: "white",
-    fontSize: 40
   },
   burgerLine: {
     width: "100%",
