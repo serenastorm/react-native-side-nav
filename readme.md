@@ -10,6 +10,11 @@
 [![npm downloads](https://img.shields.io/npm/dm/react-native-side-nav.svg?style=flat-square&colorB=b91d73)](https://npmjs.org/package/react-native-side-nav)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square&colorB=b91d73)](https://opensource.org/licenses/MIT)
 
+## Changelogs
+
+- **[1.8.0]**
+  - Added burgerIcon
+
 ## Contents
 
 - [Contents](#contents)
