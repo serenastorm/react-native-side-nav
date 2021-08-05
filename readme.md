@@ -9,11 +9,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square&colorB=b91d73)](http://makeapullrequest.com)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-side-nav.svg?style=flat-square&colorB=b91d73)](https://npmjs.org/package/react-native-side-nav)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square&colorB=b91d73)](https://opensource.org/licenses/MIT)
-
-## Changelogs
-
-- **[2.0.0]**
-  - Added burgerIcon
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
 ## Contents
 
@@ -25,87 +21,27 @@
 
 ## Usage
 
-#### Class Component
-
 ```jsx
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import SideMenu from "react-native-side-nav";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuExpanded: false
-    };
-  }
-
-  toggleMenu = () => {
-    this.setState({ menuExpanded: !this.state.menuExpanded });
-  };
-
-  menuComponent = () => {
-    return (
-      <View>
-        <TouchableOpacity onPress={this.toggleMenu}>
-          // Your close button
-        </TouchableOpacity>
-        // Your menu content
-      </View>
-    );
-  };
-
-  render() {
-    return (
-      <View>
-        <SideMenu
-          menuExpanded={this.state.menuExpanded}
-          menuComponent={this.menuComponent()}
-          burgerIcon={true}
-          onPress={this.toggleMenu}
-        >
-          // Your App components
-        </SideMenu>
-      </View>
-    );
-  }
-}
-
-export default App;
-```
-
-#### Using Hooks
-
-```jsx
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import SideMenu from "react-native-side-nav";
+const MenuComponent = () => {
+  return <View style={styles.animatedBox}>
+         // Your menu content here
+         </View>;
+};
 
 const App = () => {
   const [menuExpanded, setMenuExpanded] = useState(false);
 
-  toggleMenu = () => {
-    setMenuExpanded(!menuExpanded);
-  };
-
-  menuComponent = () => {
-    return (
-      <View style={styles.animatedBox}>
-        <TouchableOpacity onPress={toggleMenu}>
-          // Your close button
-        </TouchableOpacity>
-        // Your menu content
-      </View>
-    );
-  };
-
   return (
     <View>
       <SideMenu
-        menuExpanded={this.state.menuExpanded}
-        menuComponent={this.menuComponent()}
-        burgerIcon={true}
-        onPress={toggleMenu}
+        menuExpanded={menuExpanded}
+        menuComponent={<MenuComponent />}
+        burgerIcon
+        onToggle={() => setMenuExpanded(!menuExpanded)}
       >
         // Your App components
       </SideMenu>
@@ -118,23 +54,24 @@ export default App;
 
 ## Props
 
-| Prop                                    |  Default  |   Type   | Description                                                                                                                                                                                         |
-| :-------------------------------------- | :-------: | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| menuExpanded                            |   false   |  `bool`  | Set to `true` to open the menu.                                                                                                                                                                     |
-| menuComponent()                         |           | `object` | The content of your drawer. (see example)                                                                                                                                                           |
-| menuWidth _optional_                    |    80     | `number` | The width of the menu, as a percentage of the screen width.                                                                                                                                         |
-| animationDuration _optional_            |    300    | `number` | The length of the animation in ms.                                                                                                                                                                  |
-| fade _optional_                         |   false   |  `bool`  | Set to `true` to make the menu fade in on top of the content. Only works if `push` is set to `false`.                                                                                               |
-| overlay _optional_                      |   false   |  `bool`  | Set to `true` adds a dark overlay on top of the app when the menu is open.                                                                                                                          |
-| overlayOpacity _optional_               |    0.4    | `number` | Sets the opacity of the overlay.                                                                                                                                                                    |
-| leftAligned _optional_                  |   false   |  `bool`  | Set to `true` to make the menu come in from the left side of the screen.                                                                                                                            |
-| push _optional_                         |   false   |  `bool`  | Set to `true` to make the menu 'push' the app contents to one side.                                                                                                                                 |
-| burgerIcon _optional_                   |   false   |  `bool`  | Set to `true` to add an absolutely positioned burger icon to toggle your menu.                                                                                                                      |
-| onPress _required if burgerIcon={true}_ |   false   |          | Your toggle function for the burger icon.                                                                                                                                                           |
-| burgerWidth _optional_                  |    35     | `number` | The width of the burger icon.                                                                                                                                                                       |
-| burgerIconStyles _optional_             |    {}     | `object` | Edit the burger X and Y position. Example: `burgerIconStyles={{top: 30, left: 20}}`. You can try passing other styles although they haven't been tested. Use the burger icon color props instead.   |
-| burgerIconColor1 _optional_             | '#ffffff' | `string` | The color you want your burger icon to be.                                                                                                                                                          |
-| burgerIconColor2 _optional_             |    ''     | `string` | If the background of your menu doesn't match the rest of your app, you can change the color of the icon when the menu is expanded. If you don't set this value it will default to burgerIconColor1. |
+| Prop                                     |  Default  |    Type     | Description                                                                                                                                                                                         |
+| :--------------------------------------- | :-------: | :---------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| menuExpanded                             |   false   |  `boolean`  | Set to `true` or `false` to open or close the menu.                                                                                                                                                 |
+| menuComponent                            |           | `ReactNode` | The content of your drawer. (see example)                                                                                                                                                           |
+| menuWidth _optional_                     |    80     |  `number`   | The width of the menu, as a percentage of the screen width.                                                                                                                                         |
+| animationDuration _optional_             |    300    |  `number`   | The length of the animation in ms.                                                                                                                                                                  |
+| fade _optional_                          |   false   |  `boolean`  | Set to `true` to make the menu fade in on top of the content. Only works if `push` is set to `false`.                                                                                               |
+| overlay _optional_                       |   false   |  `boolean`  | Set to `true` adds a dark overlay on top of the app when the menu is open.                                                                                                                          |
+| overlayOpacity _optional_                |    0.4    |  `number`   | Sets the opacity of the overlay. Only works if `overlay` is set to `true`.                                                                                                                          |
+| leftAligned _optional_                   |   false   |  `boolean`  | Set to `true` to make the menu come in from the left side of the screen.                                                                                                                            |
+| push _optional_                          |   false   |  `boolean`  | Set to `true` to make the menu 'push' your app contents to one side.                                                                                                                                |
+| burgerIcon _optional_                    |   false   |  `boolean`  | Set to `true` to add an absolutely positioned burger icon to toggle your menu.                                                                                                                      |
+| onToggle _required if burgerIcon={true}_ |   null    | `() => any` | Your toggle function for the burger icon. (see example)                                                                                                                         |
+| onHide _optional_                        |   null    | `() => any` | The menu's hide function, pass this down if you want users to be able to close the menu by tapping outside of it. Ex `onHide={() => setShow(false)`                                                                                                                         |
+| burgerWidth _optional_                   |    35     |  `number`   | The width of the burger icon.                                                                                                                                                                       |
+| burgerIconStyles _optional_              |    {}     | `ViewStyle` | Edit the burger X and Y position. Example: `burgerIconStyles={{top: 30, left: 20}}`. You can try passing other styles although they haven't been tested. Use the burger icon color props instead.   |
+| burgerIconColor1 _optional_              | '#ffffff' |  `string`   | The color you want your burger icon to be.                                                                                                                                                          |
+| burgerIconColor2 _optional_              |    ''     |  `string`   | If the background of your menu doesn't match the rest of your app, you can change the color of the icon when the menu is expanded. If you don't set this value it will default to burgerIconColor1. |
 
 ## Examples
 
@@ -202,6 +139,8 @@ export default App;
 
 - [ ] Improve animation
 - [ ] Android support
+- [ ] Update docs examples
+- [x] Typescript
 - [x] Add burger icon
 - [x] Testing
 - [x] Add overlay opacity prop
@@ -210,4 +149,4 @@ export default App;
 
 Feel free to [contact me](mailto:serena.antonetti@gmail.com) or [create an issue](https://github.com/serenastorm/react-native-side-nav/issues/new)
 
-> Inspired by [leecade/react-native-swiper](https://github.com/leecade/react-native-swiper/) & made with ♥.
+> Made with ♥.
