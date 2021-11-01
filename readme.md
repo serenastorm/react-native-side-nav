@@ -13,11 +13,18 @@
 
 ## Contents
 
+
+- [Installation](#installation)
 - [Contents](#contents)
 - [Usage](#usage)
 - [Props](#props)
 - [Examples](#examples)
 - [Roadmap](#roadmap)
+
+## Installation
+```sh
+npm i react-native-side-nav
+```
 
 ## Usage
 
@@ -27,7 +34,7 @@ import { View, TouchableOpacity } from "react-native";
 import SideMenu from "react-native-side-nav";
 
 const MenuComponent = () => {
-  return <View style={styles.animatedBox}>
+  return <View style={styles.yourMenuStyles}>
          // Your menu content here
          </View>;
 };
